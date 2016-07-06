@@ -12,6 +12,6 @@ class GaussianNoise(BaseNoise):
     def sample_next(self, samples, errors):
         return np.random.normal(loc=self.mean, scale=self.std, size=1)
 
-    def sample(self, n_samples):
-        return np.random.normal(loc=self.mean, scale=self.std, size=n_samples)
+    def sample(self, nsamples):
+        return np.random.normal(loc=self.mean, scale=self.std, size=nsamples)
 
