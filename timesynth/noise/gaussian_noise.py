@@ -1,5 +1,5 @@
 import numpy as np
-from base_noise import BaseNoise
+from .base_noise import BaseNoise
 
 class GaussianNoise(BaseNoise):
 
@@ -14,4 +14,3 @@ class GaussianNoise(BaseNoise):
 
     def sample(self, nsamples):
         return np.random.normal(loc=self.mean, scale=self.std, size=nsamples)
-

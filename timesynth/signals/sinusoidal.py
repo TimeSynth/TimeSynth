@@ -1,5 +1,5 @@
 import numpy as np
-from base_signal import BaseSignal
+from .base_signal import BaseSignal
 
 class Sinusoidal():
 
@@ -26,5 +26,3 @@ if __name__ == "__main__":
     sig = Sinusoidal()
     print sig.sample(nsamples=10)
 """
-
-
