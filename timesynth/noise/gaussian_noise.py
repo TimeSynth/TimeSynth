@@ -3,7 +3,7 @@ from .base_noise import BaseNoise
 
 class GaussianNoise(BaseNoise):
 
-    def __init__(self, mean=0, std=0):
+    def __init__(self, mean=0, std=1.):
         """
         """
         self.mean = mean

@@ -1,3 +1,5 @@
+import numpy as np
+
 class TimeSeriesGenerator:
     def __init__(self, sampling_frequency, signal_generator, noise_generator):
         self.sampling_frequency = sampling_frequency
@@ -12,15 +14,23 @@ class TimeSeriesGenerator:
         samples = np.zeros(n_samples)  # Signal and errors combined
         signals = np.zeros(n_samples)  # Signal samples
         errors = np.zeros(n_samples)  # Handle errors seprately
+        times = np.zeros(n_samples)
 
         # Sample iteratively, while providing access to all previously sampled steps
         for i in range(n_samples):
-            signals[i] = self.signal_generator.sample_next(samples[:i - 1], errors[:i - 1])
+            # Get time and signal
+            signal, t = self.signal_generator.sample_next(samples[:i - 1], errors[:i - 1])
+            times[i] = t
+            signals[i] = signal
+            
+            # Sample error at time
             errors[i] = self.noise_generator.sample_next(samples[:i - 1], errors[:i - 1])
+            
+            # Compound signal and noise
             samples[i] = signals[i] + errors[i]
         
-        # Only return samples
-        return samples
+        # Return both times and samples
+        return times, samples
 
     def sample_range(self, start, stop, step):
         num_samples = (stop - start) // step
