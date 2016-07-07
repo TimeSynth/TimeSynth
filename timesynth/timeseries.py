@@ -24,7 +24,7 @@ class TimeSeriesGenerator:
             signals[i] = signal
             
             # Sample error at time
-            errors[i] = self.noise_generator.sample_next(samples[:i - 1], errors[:i - 1])
+            errors[i] = self.noise_generator.sample_next(t, samples[:i - 1], errors[:i - 1])
             
             # Compound signal and noise
             samples[i] = signals[i] + errors[i]
