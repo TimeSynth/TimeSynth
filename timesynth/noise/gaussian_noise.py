@@ -9,7 +9,7 @@ class GaussianNoise(BaseNoise):
         self.mean = mean
         self.std = std
 
-    def sample_next(self, samples, errors):
+    def sample_next(self, t, samples, errors):
         return np.random.normal(loc=self.mean, scale=self.std, size=1)
     
     def set_frequency(self, frequency):
