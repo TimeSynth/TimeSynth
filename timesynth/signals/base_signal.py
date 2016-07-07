@@ -5,3 +5,6 @@ class BaseSignal:
     
     def sample_next(self, samples, errors):
         raise NotImplementedError
+        
+    def set_frequency(self, frequency):
+        raise NotImplementedError
