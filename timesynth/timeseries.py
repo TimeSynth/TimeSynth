@@ -8,7 +8,7 @@ class TimeSeriesGenerator:
         self.signal_generator.set_frequency(self.sampling_frequency)
         self.noise_generator.set_frequency(self.sampling_frequency)
 
-    def sample(self, n_samples, resolution):
+    def sample(self, n_samples):
         samples = np.zeros(n_samples)  # Signal and errors combined
         signals = np.zeros(n_samples)  # Signal samples
         errors = np.zeros(n_samples)  # Handle errors seprately
