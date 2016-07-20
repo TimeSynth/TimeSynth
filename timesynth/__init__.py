@@ -1,3 +1,3 @@
-from .timeseries import TimeSeriesGenerator
-from .signals import *
-from .noise import *
+from .timeseries import TimeSeries
+from . import signals
+from . import noise

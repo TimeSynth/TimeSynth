@@ -1,6 +1,8 @@
 import numpy as np
 from .base_signal import BaseSignal
 
+__all__ = ['Sinusoidal']
+
 
 class Sinusoidal(BaseSignal):
 

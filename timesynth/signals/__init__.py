@@ -1,6 +1,6 @@
-# Adapted from http://stackoverflow.com/a/1057534/3104646
-from os.path import dirname, basename, isfile
-import glob
+from os.path import dirname as _dirname, basename as _basename, isfile as _isfile
+import glob as _glob
 
-modules = glob.glob(dirname(__file__) + "/*.py")
-__all__ = [basename(f)[:-3] for f in modules if isfile(f) and not basename(f).startswith('_')]
+exec('\n'.join(map(lambda name: "from ." + name + " import *", 
+                   [_basename(f)[:-3] for f in _glob.glob(_dirname(__file__) + "/*.py") \
+                    if _isfile(f) and not _basename(f).startswith('_')])))

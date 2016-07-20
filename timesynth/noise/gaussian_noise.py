@@ -1,6 +1,9 @@
 import numpy as np
 from .base_noise import BaseNoise
 
+__all__ = ['GaussianNoise']
+
+
 class GaussianNoise(BaseNoise):
 
     def __init__(self, mean=0, std=1.):
@@ -11,7 +14,7 @@ class GaussianNoise(BaseNoise):
 
     def sample_next(self, t, samples, errors):
         return np.random.normal(loc=self.mean, scale=self.std, size=1)
-    
+
     def set_frequency(self, frequency):
         pass
 

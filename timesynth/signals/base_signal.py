@@ -1,3 +1,6 @@
+__all__ = []
+
+
 class BaseSignal:
     """BaseSignal class
     Signature for all signal classes.

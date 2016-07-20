@@ -1,10 +1,10 @@
 import numpy as np
 
-class TimeSeriesGenerator:
-    def __init__(self, sampling_frequency, signal_generator, noise_generator):
-        self.sampling_frequency = sampling_frequency
+class TimeSeries:
+    def __init__(self, signal_generator, noise_generator, sampling_frequency=1):
         self.signal_generator = signal_generator
         self.noise_generator = noise_generator
+        self.sampling_frequency = sampling_frequency
 
         # Set frequencies
         self.signal_generator.set_frequency(self.sampling_frequency)
