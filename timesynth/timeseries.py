@@ -1,5 +1,8 @@
 import numpy as np
 
+__all__ = ['TimeSeries']
+
+
 class TimeSeries:
     def __init__(self, signal_generator, noise_generator, sampling_frequency=1):
         self.signal_generator = signal_generator

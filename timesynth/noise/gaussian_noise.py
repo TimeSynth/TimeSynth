@@ -8,6 +8,7 @@ class GaussianNoise(BaseNoise):
 
     def __init__(self, mean=0, std=1.):
         """
+        Docstring.
         """
         self.mean = mean
         self.std = std
