@@ -13,7 +13,7 @@ class PseudoPeriodic(BaseSignal):
         self.ampSD = ampSD
         self.setFreqLow = False
 
-    def sample_next(self, samples, errors):
+    def sample_next(self, t, samples, errors):
         self.curr_sample += self.resolution
         freqVal = np.random.normal(loc=self.frequency, scale=self.freqSD, size=1)
         amplitudeVal = np.random.normal(loc=self.amplitude, scale=self.ampSD, size=1)

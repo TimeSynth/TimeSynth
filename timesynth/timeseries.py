@@ -4,14 +4,15 @@ __all__ = ['TimeSeries']
 
 
 class TimeSeries:
-    def __init__(self, signal_generator, noise_generator, sampling_frequency=1):
+    def __init__(self, signal_generator, noise_generator=None, sampling_frequency=1):
         self.signal_generator = signal_generator
         self.noise_generator = noise_generator
         self.sampling_frequency = sampling_frequency
 
         # Set frequencies
         self.signal_generator.set_frequency(self.sampling_frequency)
-        self.noise_generator.set_frequency(self.sampling_frequency)
+        if not self.noise_generator is None:
+            self.noise_generator.set_frequency(self.sampling_frequency)
 
     def sample(self, n_samples):
         samples = np.zeros(n_samples)  # Signal and errors combined
@@ -27,10 +28,13 @@ class TimeSeries:
             signals[i] = signal
             
             # Sample error at time
-            errors[i] = self.noise_generator.sample_next(t, samples[:i - 1], errors[:i - 1])
+            if not self.noise_generator is None:
+                errors[i] = self.noise_generator.sample_next(t, samples[:i - 1], errors[:i - 1])
             
             # Compound signal and noise
-            samples[i] = signals[i] + errors[i]
+            samples[i] = signals[i]
+            if not self.noise_generator is None:
+                samples[i] += errors[i]
         
         # Return both times and samples
         return times, samples

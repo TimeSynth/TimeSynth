@@ -14,7 +14,7 @@ class Sinusoidal(BaseSignal):
         self.ftype_dict = {"sin": np.sin, "cos": np.cos, "tan": np.tan}
         self.ftype = self.ftype_dict[ftype]
 
-    def sample_next(self, samples, errors):
+    def sample_next(self, t, samples, errors):
         self.curr_sample += self.resolution
         return self.amplitude * self.ftype(self.curr_sample), self.curr_sample
 
