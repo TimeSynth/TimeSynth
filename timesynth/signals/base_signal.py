@@ -6,11 +6,6 @@ class BaseSignal:
     
     Signature for all signal classes.
     
-    Methods
-    ------
-    sample_next : ...
-        ...
-    
     """
     
     def __init__(self):

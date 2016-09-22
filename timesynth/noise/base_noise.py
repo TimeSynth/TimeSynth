@@ -3,7 +3,9 @@ __all__ = []
 
 class BaseNoise:
     """BaseNoise class
+    
     Signature for all noise classes.
+    
     """
     
     def __init__(self):

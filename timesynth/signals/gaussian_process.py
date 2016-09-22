@@ -1,11 +1,12 @@
 import numpy as np
+import GPy
 from .base_signal import BaseSignal
 
 __all__ = ['GaussianProcess']
 
 
 class GaussianProcess(BaseSignal):
-    """Gaussian Process sampler
+    """Gaussian Process time series sampler
     
     Attributes
     ----------
