@@ -1,6 +1,7 @@
 import numpy as np
 from .base_noise import BaseNoise
 
+
 __all__ = ['GaussianNoise']
 
 
@@ -22,12 +23,12 @@ class GaussianNoise(BaseNoise):
         self.vectorizable = True
         self.mean = mean
         self.std = std
+        
+    def set_frequency(self, frequency):
+        pass  # Gaussian additive noise is independent of timing
 
     def sample_next(self, t, samples, errors):
         return np.random.normal(loc=self.mean, scale=self.std, size=1)
-
-    def set_frequency(self, frequency):
-        pass  # Gaussian additive noise is independent of timing
 
     def sample_vectorized(self, n_samples):
         return np.random.normal(loc=self.mean, scale=self.std, size=n_samples)
