@@ -3,7 +3,7 @@ TO DO
 
 TimeSeries class
 ----------------
-- Fix current broken implementation
+- Fix current broken implementation (usage of parameter `t`)
 - Implement `vectorizable = True`
 - Irregular sampling, verify use sampling frequency
 
