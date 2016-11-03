@@ -6,26 +6,64 @@ __all__ = ['PseudoPeriodic']
 
 class PseudoPeriodic(BaseSignal):
 
-    def __init__(self, amplitude=1.0, frequency=100, ampSD=0.1, freqSD=0.4):
+    def __init__(self, amplitude=1.0, frequency=100, ampSD=0.1, freqSD=0.4,
+                 ftype=np.sin):
+        """Initialize PseudoPeriodic class
+
+        Parameters
+        ----------
+        amplitude : number (default 1.0)
+            Amplitude of the harmonic series
+        frequency : number (default 1.0)
+            Frequency of the harmonic series
+        ampSD : number (default 0.1)
+            Amplitude standard deviation
+        freqSD : number (default 0.1)
+            Frequency standard deviation
+        ftype : function(default np.sin)
+            Harmonic function
+        """
+        self.vectorizable = True
         self.amplitude = amplitude
         self.frequency = frequency
         self.freqSD = freqSD
         self.ampSD = ampSD
-        self.setFreqLow = False
+        self.ftype = ftype
 
-    def sample_next(self, t, samples, errors):
-        self.curr_sample += self.resolution
-        freqVal = np.random.normal(loc=self.frequency, scale=self.freqSD, size=1)
-        amplitudeVal = np.random.normal(loc=self.amplitude, scale=self.ampSD, size=1)
-        return float(amplitudeVal * np.sin(freqVal * self.curr_sample)), self.curr_sample
+    def sample_next(self, time, samples, errors):
+        """Sample a single time point
 
-    def sample(self, nsamples=100):
-        timeVec = np.linspace(0, nsamples * self.resolution, num=nsamples)
-        freqArr = np.random.normal(loc=self.frequency, scale=self.freqSD, size=nsamples)
-        ampArr = np.random.normal(loc=self.amplitude, scale=self.ampSD, size=nsamples)
-        signal = np.multiply(ampArr, np.sin(np.multiply(freqArr, timeVec)))
-        return signal, timeVec
+        Parameters
+        ----------
+        time : number
+            Time at which a sample was required
 
-    def set_frequency(self, frequency):
-        self.resolution = 1. / frequency
-        self.curr_sample = -self.resolution
+        Returns
+        -------
+        float
+            sampled signal for time t
+
+        """
+        freq_val = np.random.normal(loc=self.frequency, scale=self.freqSD, size=1)
+        amplitude_val = np.random.normal(loc=self.amplitude, scale=self.ampSD, size=1)
+        return float(amplitude_val * np.sin(freq_val * time))
+
+    def sample_vectorized(self, time_vector):
+        """Sample entire series based off of time vector
+
+        Parameters
+        ----------
+        time_vector : array-like
+            Timestamps for signal generation
+
+        Returns
+        -------
+        array-like
+            sampled signal for time vector
+
+        """
+        n_samples = len(time_vector)
+        freq_arr = np.random.normal(loc=self.frequency, scale=self.freqSD, size=n_samples)
+        amp_arr = np.random.normal(loc=self.amplitude, scale=self.ampSD, size=n_samples)
+        signal = np.multiply(amp_arr, self.ftype(np.multiply(freq_arr, time_vector)))
+        return signal
