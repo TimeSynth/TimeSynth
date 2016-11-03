@@ -42,7 +42,7 @@ class Sinusoidal(BaseSignal):
         return self.amplitude * self.ftype(2*np.pi*self.frequency*time)
 
     def sample_vectorized(self, time_vector):
-        """Sample a single time point
+        """Sample entire series based off of time vector
 
         Parameters
         ----------
@@ -51,8 +51,8 @@ class Sinusoidal(BaseSignal):
 
         Returns
         -------
-        float
-            sampled signal for time t
+        array-like
+            sampled signal for time vector
 
         """
         if self.vectorizable is True:
