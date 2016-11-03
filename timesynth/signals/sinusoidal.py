@@ -7,21 +7,57 @@ __all__ = ['Sinusoidal']
 
 class Sinusoidal(BaseSignal):
 
-    def __init__(self, amplitude=1.0):
+    def __init__(self, amplitude=1.0, frequency=1.0, ftype=np.sin):
+        """Initialize Sinusoidal class
+
+        Parameters
+        ----------
+        amplitude : number (default 1.0)
+            Amplitude of the harmonic series
+        frequency : number (default 1.0)
+            Frequency of the harmonic series
+        ftype : function (default np.sin)
+            Harmonic function
+
+        """
         self.vectorizable = True
         self.amplitude = amplitude
+        self.ftype = ftype
+        self.frequency = frequency
 
-    def sample_next(self, t, samples, errors):
-        self.current_sample += self.resolution
-        return self.amplitude * self.ftype(self.curr_sample), self.curr_sample
+    def sample_next(self, time, samples, errors):
+        """Sample a single time point
 
-    def sample_vectorized(self, n_samples=100):
-        timeVec = np.linspace(0, n_samples * self.resolution, num=n_samples)
-        signal = self.amplitude * self.ftype(timeVec)
+        Parameters
+        ----------
+        time : number
+            Time at which a sample was required
 
-        return signal, timeVec
+        Returns
+        -------
+        float
+            sampled signal for time t
 
-    def set_frequency(self, frequency):
-        self.resolution = 1. / frequency
-        self.curr_sample = -self.resolution
-        self.setFreqFlag = True
+        """
+        return self.amplitude * self.ftype(2*np.pi*self.frequency*time)
+
+    def sample_vectorized(self, time_vector):
+        """Sample a single time point
+
+        Parameters
+        ----------
+        time_vector : array-like
+            Timestamps for signal generation
+
+        Returns
+        -------
+        float
+            sampled signal for time t
+
+        """
+        if self.vectorizable is True:
+            signal = self.amplitude * self.ftype(2*np.pi*self.frequency *
+                                                 time_vector)
+            return signal
+        else:
+            raise ValueError("Signal type not vectorizable")

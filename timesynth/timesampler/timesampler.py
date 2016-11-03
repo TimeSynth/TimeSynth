@@ -78,7 +78,7 @@ class TimeSampler:
         else:
             time_vector = np.linspace(self.start_time, self.stop_time,
                                       num_points)
-            resolution = float(stop_time)/num_points
+            resolution = float(self.stop_time-self.start_time)/num_points
         time_vector = self._select_random_indices(time_vector,
                                                   keep_percentage)
         return self._create_perturbations(time_vector, resolution)
