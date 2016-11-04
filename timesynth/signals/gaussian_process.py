@@ -12,7 +12,8 @@ class GaussianProcess(BaseSignal):
     ----------
     kernel : string
         the kernel type, as described in [1], which can be:
-        - `Constant`. To use this kernel, set keyword argument `c`
+        - `Constant`. All covariances set to `variance`
+        - `Exponential`. Ornstein-Uhlenbeck kernel. Optionally, set keyword `gamma` for a gamma-exponential kernel (0 < gamma ≤ 2)
         - `SE`, the squared exponential.
         - `RQ`, the rational quadratic. To use this kernel, set keyword argument `alpha`
         - `Linear`. To use this kernel, set keyword arguments `c` and `offset`
@@ -29,17 +30,18 @@ class GaussianProcess(BaseSignal):
     
     """
 
-    def __init__(self, kernel="SE", lengthscale=1., mean=0., variance=1., c=1., alpha=1., offset=0., nu=5./2, p=1.):
+    def __init__(self, kernel="SE", lengthscale=1., mean=0., variance=1., c=1., gamma=1., alpha=1., offset=0., nu=5./2, p=1.):
         self.vectorizable = True
         self.lengthscale = lengthscale
         self.mean = mean
         self.variance = variance
         self.kernel = kernel
-        self.kernel_function = {"Constant": lambda x1, x2: c,
-                                "SE": lambda x1, x2: variance * np.exp(- np.square(x1 - x2) / (2 * np.square(self.lengthscale))),
-                                "RQ": lambda x1, x2: variance * np.power((1 + np.square(x1 - x2) / (2 * alpha * np.square(self.lengthscale))), -alpha),
+        self.kernel_function = {"Constant": lambda x1, x2: variance,
+                                "Exponential": lambda x1, x2: variance * np.exp(-np.power(np.abs(x1 - x2) / lengthscale, gamma),
+                                "SE": lambda x1, x2: variance * np.exp(- np.square(x1 - x2) / (2 * np.square(lengthscale))),
+                                "RQ": lambda x1, x2: variance * np.power((1 + np.square(x1 - x2) / (2 * alpha * np.square(lengthscale))), -alpha),
                                 "Linear": lambda x1, x2: variance * (x1 - c) * (x2 - c) + offset, 
-                                "Matern": lambda x1, x2: variance if x1 - x2 == 0. else variance * (np.power(2, 1-nu) / gamma(nu)) * np.power(np.sqrt(2 * nu) * np.abs(x1 - x2) / self.lengthscale, nu) * kv(nu, np.sqrt(2 * nu) * np.abs(x1 - x2) / self.lengthscale),
+                                "Matern": lambda x1, x2: variance if x1 - x2 == 0. else variance * (np.power(2, 1-nu) / gamma(nu)) * np.power(np.sqrt(2 * nu) * np.abs(x1 - x2) / lengthscale, nu) * kv(nu, np.sqrt(2 * nu) * np.abs(x1 - x2) / lengthscale),
                                 "Periodic":lambda x1, x2: variance * np.exp(- 2 * np.square(np.sin(np.pi * np.abs(x1 - x2) / p))),
                                 }[kernel]
 
