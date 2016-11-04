@@ -27,13 +27,13 @@ class TimeSeries:
 
         # Vectorize if possible
         if self.signal_generator.vectorizable and not self.noise_generator is None and self.noise_generator.vectorizable:
-            samples = self.signal_generator.sample_vectorized(time_vector)
+            signals = self.signal_generator.sample_vectorized(time_vector)
             errors = self.noise_generator.sample_vectorized(time_vector)
-            signals = samples + errors
+            samples = signals + errors
         elif self.signal_generator.vectorizable and self.noise_generator is None:
-            samples = self.signal_generator.sample_vectorized(time_vector)
+            signals = self.signal_generator.sample_vectorized(time_vector)
             errors = None
-            signals = samples
+            samples = signals
         else:
             n_samples = len(time_vector)
             samples = np.zeros(n_samples)  # Signal and errors combined
