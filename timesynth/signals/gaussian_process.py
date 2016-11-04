@@ -11,7 +11,7 @@ class GaussianProcess(BaseSignal):
     Parameters
     ----------
     kernel : string
-        the kernel type, as described in [1], which can be:
+        the kernel type, as described in [1] and [2], which can be:
         - `Constant`. All covariances set to `variance`
         - `Exponential`. Ornstein-Uhlenbeck kernel. Optionally, set keyword `gamma` for a gamma-exponential kernel (0 < gamma ≤ 2)
         - `SE`, the squared exponential.
@@ -26,7 +26,9 @@ class GaussianProcess(BaseSignal):
     lengthscale : float
             the characteristic lengthscale used to generate the covariance matrix
         
-    [1] = http://www.cs.toronto.edu/~duvenaud/cookbook/index.html
+    [1] http://www.cs.toronto.edu/~duvenaud/cookbook/index.html
+    [2] Rasmussen, C.E., 2006. Gaussian processes for machine learning. 
+        URL: https://pdfs.semanticscholar.org/a9fe/ab0fe858dbde2eecff8b1f7c629cc6aff8ad.pdf
     
     """
 
