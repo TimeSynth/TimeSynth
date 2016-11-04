@@ -1,5 +1,5 @@
 import numpy as np
-import GPy
+from scipy.special import gamma, kv
 from .base_signal import BaseSignal
 
 __all__ = ['GaussianProcess']
@@ -8,34 +8,72 @@ __all__ = ['GaussianProcess']
 class GaussianProcess(BaseSignal):
     """Gaussian Process time series sampler
     
-    Attributes
+    Parameters
     ----------
-    amplitude : float
-        desc
-    length_scale : float
-        the characteristic length scale used to generate the covariance matrix
     kernel : string
-        the kernel type, which can be `exponential`, `linear` or `matern`
+        the kernel type, as described in [1], which can be:
+        - `Constant`. To use this kernel, set keyword argument `c`
+        - `SE`, the squared exponential.
+        - `RQ`, the rational quadratic. To use this kernel, set keyword argument `alpha`
+        - `Linear`. To use this kernel, set keyword arguments `c` and `offset`
+        - `Matern`. To use this kernel, set keyword argument `nu`
+        - `Periodic`. To use this kernel, set keyword argument `p` for the period
+    mean : float
+        the mean of the gaussian process
+    variance : float
+        the output variance of the gaussian process (sigma^2)
+    lengthscale : float
+            the characteristic lengthscale used to generate the covariance matrix
         
+    [1] = http://www.cs.toronto.edu/~duvenaud/cookbook/index.html
+    
     """
 
-    def __init__(self, amplitude=1.0, length_scale=20, kernel="exponential"):
-        self.amplitude = amplitude
-        self.kernel_options = {"exponential": np.exp, "linear": lambda x: x, "matern": None}  # TODO
-        self.kernel_function = self.kernel_options[kernel]
-        self.length_scale = length_scale
+    def __init__(self, kernel="SE", lengthscale=1., mean=0., variance=1., c=1., alpha=1., offset=0., nu=5./2, p=1.):
+        self.vectorizable = True
+        self.lengthscale = lengthscale
+        self.mean = mean
+        self.variance = variance
+        self.kernel = kernel
+        self.kernel_function = {"Constant": lambda x1, x2: c,
+                                "SE": lambda x1, x2: variance * np.exp(- np.square(x1 - x2) / (2 * np.square(self.lengthscale))),
+                                "RQ": lambda x1, x2: variance * np.power((1 + np.square(x1 - x2) / (2 * alpha * np.square(self.lengthscale))), -alpha),
+                                "Linear": lambda x1, x2: variance * (x1 - c) * (x2 - c) + offset, 
+                                "Matern": lambda x1, x2: variance if x1 - x2 == 0. else variance * (np.power(2, 1-nu) / gamma(nu)) * np.power(np.sqrt(2 * nu) * np.abs(x1 - x2) / self.lengthscale, nu) * kv(nu, np.sqrt(2 * nu) * np.abs(x1 - x2) / self.lengthscale),
+                                "Periodic":lambda x1, x2: variance * np.exp(- 2 * np.square(np.sin(np.pi * np.abs(x1 - x2) / p))),
+                                }[kernel]
 
-    def sample_next(self, t, samples, errors):
-        return NotImplementedError
+    def sample_next(self, time, samples, errors):
+        """Sample a single time point
 
-    def sample(self, n_samples=100):
-        times = np.linspace(0, n_samples * self.resolution, num=n_samples)
-        mean = np.zeros(n_samples)
-        samples = np.array([[j for j in range(n_samples)] for k in range(n_samples)])
-        covariance_matrix = self.kernel_function(-(vec - vec.T)**2 / float(self.length_scale**2))
-        signal = self.amplitude * np.random.multivariate_normal(mean, covMat, size=(1,))[0]
-        return signal, timeVec
+        Parameters
+        ----------
+        time : number
+            Time at which a sample was required
 
-    def set_frequency(self, frequency):
-        self.resolution = 1. / frequency
-        self.curr_sample = -self.resolution
+        Returns
+        -------
+        float
+            sampled signal for time t
+
+        """
+        raise NotImplementedError
+
+    def sample_vectorized(self, time_vector):
+        """Sample entire series based off of time vector
+
+        Parameters
+        ----------
+        time_vector : array-like
+            Timestamps for signal generation
+
+        Returns
+        -------
+        array-like
+            sampled signal for time vector
+
+        """
+        cartesian_time = np.dstack(np.meshgrid(time_vector, time_vector)).reshape(-1, 2)
+        covariance_matrix = np.vectorize(self.kernel_function)(cartesian_time[:, 0], cartesian_time[:, 1]).reshape(-1, time_vector.shape[0])
+        covariance_matrix[np.diag_indices_from(covariance_matrix)] += 1e-12  # Add small value to diagonal for numerical stability
+        return np.random.multivariate_normal(mean=np.full(shape=(time_vector.shape[0],), fill_value=self.mean), cov=covariance_matrix)

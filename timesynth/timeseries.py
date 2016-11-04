@@ -12,10 +12,10 @@ class TimeSeries:
 
     Parameters
     ----------
-    signal_generator : Signal` object
-        signal type for time series
+    signal_generator : `Signal` object
+        signal object for time series
     noise_generator : `Noise` object
-        noise type for time series
+        noise object for time series
 
     """
     def __init__(self, signal_generator, noise_generator=None):
@@ -23,17 +23,17 @@ class TimeSeries:
         self.noise_generator = noise_generator
 
 
-    def sample_(self, time_vector):
+    def sample(self, time_vector):
 
         # Vectorize if possible
         if self.signal_generator.vectorizable and not self.noise_generator is None and self.noise_generator.vectorizable:
-            signals = self.signal_generator.sample_vectorized(time_vector)
+            samples = self.signal_generator.sample_vectorized(time_vector)
             errors = self.noise_generator.sample_vectorized(time_vector)
-            samples = signals + errors
+            signals = samples + errors
         elif self.signal_generator.vectorizable and self.noise_generator is None:
-            signals = self.signal_generator.sample_vectorized(time_vector)
+            samples = self.signal_generator.sample_vectorized(time_vector)
             errors = None
-            samples = signals
+            signals = samples
         else:
             n_samples = len(time_vector)
             samples = np.zeros(n_samples)  # Signal and errors combined
@@ -56,5 +56,5 @@ class TimeSeries:
                 # Compound signal and noise
                 samples[i] = signals[i] + errors[i]
 
-        # Return samples, as well as signals and errors
+        # Return both times and samples, as well as signals and errors
         return samples, signals, errors
