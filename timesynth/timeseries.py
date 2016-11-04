@@ -32,7 +32,7 @@ class TimeSeries:
             samples = signals + errors
         elif self.signal_generator.vectorizable and self.noise_generator is None:
             signals = self.signal_generator.sample_vectorized(time_vector)
-            errors = None
+            errors = np.zeros(len(time_vector))
             samples = signals
         else:
             n_samples = len(time_vector)
