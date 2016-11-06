@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.special import gamma, kv
+import scipy.special
 from .base_signal import BaseSignal
 
 __all__ = ['GaussianProcess']
@@ -43,7 +43,7 @@ class GaussianProcess(BaseSignal):
                                 "SE": lambda x1, x2: variance * np.exp(- np.square(x1 - x2) / (2 * np.square(lengthscale))),
                                 "RQ": lambda x1, x2: variance * np.power((1 + np.square(x1 - x2) / (2 * alpha * np.square(lengthscale))), -alpha),
                                 "Linear": lambda x1, x2: variance * (x1 - c) * (x2 - c) + offset,
-                                "Matern": lambda x1, x2: variance if x1 - x2 == 0. else variance * (np.power(2, 1-nu) / gamma(nu)) * np.power(np.sqrt(2 * nu) * np.abs(x1 - x2) / lengthscale, nu) * kv(nu, np.sqrt(2 * nu) * np.abs(x1 - x2) / lengthscale),
+                                "Matern": lambda x1, x2: variance if x1 - x2 == 0. else variance * (np.power(2, 1 - nu) / scipy.special.gamma(nu)) * np.power(np.sqrt(2 * nu) * np.abs(x1 - x2) / lengthscale, nu) * scipy.special.kv(nu, np.sqrt(2 * nu) * np.abs(x1 - x2) / lengthscale),
                                 "Periodic":lambda x1, x2: variance * np.exp(- 2 * np.square(np.sin(np.pi * np.abs(x1 - x2) / p))),
                                 }[kernel]
 
@@ -78,6 +78,6 @@ class GaussianProcess(BaseSignal):
 
         """
         cartesian_time = np.dstack(np.meshgrid(time_vector, time_vector)).reshape(-1, 2)
-        covariance_matrix = np.vectorize(self.kernel_function)(cartesian_time[:, 0], cartesian_time[:, 1]).reshape(-1, time_vector.shape[0])
+        covariance_matrix = (np.vectorize(self.kernel_function)(cartesian_time[:, 0], cartesian_time[:, 1])).reshape(-1, time_vector.shape[0])
         covariance_matrix[np.diag_indices_from(covariance_matrix)] += 1e-12  # Add small value to diagonal for numerical stability
         return np.random.multivariate_normal(mean=np.full(shape=(time_vector.shape[0],), fill_value=self.mean), cov=covariance_matrix)
