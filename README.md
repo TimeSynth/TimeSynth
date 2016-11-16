@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TimeSynth/TimeSynth.svg?branch=master)](https://travis-ci.org/TimeSynth/TimeSynth) [![codecov](https://codecov.io/gh/TimeSynth/TimeSynth/branch/master/graph/badge.svg)](https://codecov.io/gh/TimeSynth/TimeSynth)
+
 # TimeSynth
 Multipurpose Library for Synthetic Time Series
 
