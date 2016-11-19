@@ -88,5 +88,9 @@ ENV/
 # Rope project settings
 .ropeproject
 
-#Ignoring swap files
+# Ignoring swap files
 *.swp
+
+# Mac stuff
+.DS_Store
+*.DS_Store
