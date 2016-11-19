@@ -1,22 +1,25 @@
 import numpy as np
 
 
+__all__ = ['TimeSampler']
+
+
 class TimeSampler:
     """
     TimeSampler class
+
     Sample time for regular and irregular time signals
+    Initializes TimeSampler class with a start time and a stop time.
+
+    Parameters
+    ----------
+    start_time: float/int (default 0)
+                Time sampling of time series starts
+    stop_time: float/int (default 10)
+                Time sampling of time series stops
+
     """
     def __init__(self, start_time=0, stop_time=10):
-        """
-        Initializes TimeSampler class with a start time and a stop time.
-
-        Parameters
-        ----------
-        start_time: float/int (default 0)
-                    Time sampling of time series starts
-        stop_time: float/int (default 10)
-                    Time sampling of time series stops
-        """
         self.start_time = start_time
         self.stop_time = stop_time
 
@@ -37,6 +40,7 @@ class TimeSampler:
         -------
         numpy array
             Regularly sampled timestamps
+
         """
         if num_points is None and resolution is None:
             raise ValueError("One of the keyword arguments must be initialized.")
@@ -69,6 +73,7 @@ class TimeSampler:
         -------
         numpy array
             Irregularly sampled timestamps
+
         """
         if num_points is None and resolution is None:
             raise ValueError("One of the keyword arguments must be initialized.")
@@ -99,6 +104,7 @@ class TimeSampler:
         -------
         numpy array
             Irregularly sampled timestamps with perturbations
+
         """
         sample_perturbations = np.random.normal(loc=0.0, scale=resolution,
                                                 size=len(time_vector))
@@ -121,6 +127,7 @@ class TimeSampler:
         -------
         numpy array
             Irregularly sampled timestamps
+
         """
         num_points = len(time_vector)
         num_select_points = int(keep_percentage*num_points/100)
