@@ -6,9 +6,8 @@ __all__ = ['RedNoise']
 
 
 class RedNoise(BaseNoise):
-    """Red noise sampler
-
-    This class adds correlated, additive red noise to your signal.
+    """Red noise generator.
+    This class adds correlated (red) noise to your signal.
 
     Attributes
     ----------
@@ -16,6 +15,10 @@ class RedNoise(BaseNoise):
         mean for the noise
     std : float
         standard deviation for the noise
+    tau : float
+        ?
+    start_value : float
+        ?
 
     """
 

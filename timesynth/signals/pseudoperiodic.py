@@ -5,24 +5,27 @@ __all__ = ['PseudoPeriodic']
 
 
 class PseudoPeriodic(BaseSignal):
+    """Signal generator for pseudoeriodic waves. 
+    The wave's amplitude and frequency have some stochasticity that 
+    can be set manually.
 
+    Parameters
+    ----------
+    amplitude : number (default 1.0)
+        Amplitude of the harmonic series
+    frequency : number (default 1.0)
+        Frequency of the harmonic series
+    ampSD : number (default 0.1)
+        Amplitude standard deviation
+    freqSD : number (default 0.1)
+        Frequency standard deviation
+    ftype : function(default np.sin)
+        Harmonic function
+        
+    """
+    
     def __init__(self, amplitude=1.0, frequency=100, ampSD=0.1, freqSD=0.4,
                  ftype=np.sin):
-        """Initialize PseudoPeriodic class
-
-        Parameters
-        ----------
-        amplitude : number (default 1.0)
-            Amplitude of the harmonic series
-        frequency : number (default 1.0)
-            Frequency of the harmonic series
-        ampSD : number (default 0.1)
-            Amplitude standard deviation
-        freqSD : number (default 0.1)
-            Frequency standard deviation
-        ftype : function(default np.sin)
-            Harmonic function
-        """
         self.vectorizable = True
         self.amplitude = amplitude
         self.frequency = frequency

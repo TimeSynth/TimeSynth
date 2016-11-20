@@ -5,20 +5,22 @@ __all__ = ['AutoRegressive']
 
 
 class AutoRegressive(BaseSignal):
-
+    """Sample generator for autoregressive (AR) signals.
+    NOTE: Only use this for regularly sampled signals
+    
+    Parameters
+    ----------
+    ar_param : list (default [None])
+        Parameter of the AR(p) process
+        [phi_1, phi_2, phi_3, .... phi_p]
+    sigma : number (default 1.0)
+        Standard deviation of the signal
+    start_value : list (default [None])
+        Starting value of the AR(p) process
+        
+    """
+    
     def __init__(self, ar_param=[None], sigma=0.5, start_value=[None]):
-        """Initialize Autoregressive class
-        NOTE: Only use this for regularly sampled signals
-        Parameters
-        ----------
-        ar_param : list (default [None])
-            Parameter of the AR(p) process
-            [phi_1, phi_2, phi_3, .... phi_p]
-        sigma : number (default 1.0)
-            Standard deviation of the signal
-        start_value : list (default [None])
-            Starting value of the AR(p) process
-        """
         self.vectorizable = False
         ar_param.reverse()
         self.ar_param = ar_param

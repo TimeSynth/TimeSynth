@@ -5,11 +5,8 @@ __all__ = ['TimeSampler']
 
 
 class TimeSampler:
-    """
-    TimeSampler class
-
-    Sample time for regular and irregular time signals
-    Initializes TimeSampler class with a start time and a stop time.
+    """TimeSampler determines how and when samples will be taken from signal and noise.
+    Samples timestamps for regular and irregular time signals
 
     Parameters
     ----------

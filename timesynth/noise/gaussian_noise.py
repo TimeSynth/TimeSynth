@@ -6,8 +6,7 @@ __all__ = ['GaussianNoise']
 
 
 class GaussianNoise(BaseNoise):
-    """Gaussian noise sampler
-
+    """Gaussian noise generator.
     This class adds uncorrelated, additive white noise to your signal.
 
     Attributes

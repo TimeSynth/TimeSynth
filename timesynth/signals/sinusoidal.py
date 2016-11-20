@@ -6,20 +6,20 @@ __all__ = ['Sinusoidal']
 
 
 class Sinusoidal(BaseSignal):
+    """Signal generator for harmonic (sinusoidal) waves.
+
+    Parameters
+    ----------
+    amplitude : number (default 1.0)
+        Amplitude of the harmonic series
+    frequency : number (default 1.0)
+        Frequency of the harmonic series
+    ftype : function (default np.sin)
+        Harmonic function
+
+    """
 
     def __init__(self, amplitude=1.0, frequency=1.0, ftype=np.sin):
-        """Initialize Sinusoidal class
-
-        Parameters
-        ----------
-        amplitude : number (default 1.0)
-            Amplitude of the harmonic series
-        frequency : number (default 1.0)
-            Frequency of the harmonic series
-        ftype : function (default np.sin)
-            Harmonic function
-
-        """
         self.vectorizable = True
         self.amplitude = amplitude
         self.ftype = ftype

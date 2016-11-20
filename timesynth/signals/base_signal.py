@@ -38,6 +38,7 @@ class BaseSignal:
         ----------
         time_vector : array like
             all time stamps to be sampled
+        
         Returns
         -------
         float

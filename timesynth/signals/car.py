@@ -5,19 +5,20 @@ __all__ = ['CAR']
 
 
 class CAR(BaseSignal):
+    """Signal generatpr for continuously autoregressive (CAR) signals.
+
+    Parameters
+    ----------
+    ar_param : number (default 1.0)
+        Parameter of the AR(1) process
+    sigma : number (default 1.0)
+        Standard deviation of the signal
+    start_value : number (default 0.0)
+        Starting value of the AR process
+        
+    """
 
     def __init__(self, ar_param=1.0, sigma=0.5, start_value=0.01):
-        """Initialize Continuous Autoregressive class
-
-        Parameters
-        ----------
-        ar_param : number (default 1.0)
-            Parameter of the AR(1) process
-        sigma : number (default 1.0)
-            Standard deviation of the signal
-        start_value : number (default 0.0)
-            Starting value of the AR process
-        """
         self.vectorizable = False
         self.ar_param = ar_param
         self.sigma = sigma

@@ -20,6 +20,7 @@ class GaussianProcess(BaseSignal):
         - `Linear`. To use this kernel, set keyword arguments `c` and `offset`
         - `Matern`. To use this kernel, set keyword argument `nu`
         - `Periodic`. To use this kernel, set keyword argument `p` for the period
+        
     mean : float
         the mean of the gaussian process
     variance : float

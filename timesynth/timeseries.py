@@ -4,9 +4,7 @@ __all__ = ['TimeSeries']
 
 
 class TimeSeries:
-    """TimeSeries class
-
-    A TimeSeries object is the main interface from which to sample time series.
+    """A TimeSeries object is the main interface from which to sample time series.
     You have to provide at least a signal generator; a noise generator is optional.
     It is recommended to set the sampling frequency.
 
