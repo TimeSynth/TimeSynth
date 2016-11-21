@@ -10,6 +10,7 @@ setup(name='timesynth',
       author='Abhishek Malali, Reinier Maat, Pavlos Protopapas',
       author_email='anon@anon.com',
       license='MIT',
+      dependency_links=['git+https://github.com/neurophysik/jitcdde.git@697fb23#egg=jitcdde'],  # for jitcdde
       include_package_data=True,
       packages=find_packages(),
-      install_requires=['numpy', 'scipy', 'nose'])
+      install_requires=['numpy', 'scipy', 'nose', 'jitcdde'])
