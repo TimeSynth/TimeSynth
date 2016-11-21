@@ -28,10 +28,26 @@ timesynth.signals.car module
     :undoc-members:
     :show-inheritance:
 
+timesynth.signals.dde module
+----------------------------
+
+.. automodule:: timesynth.signals.dde
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 timesynth.signals.gaussian_process module
 -----------------------------------------
 
 .. automodule:: timesynth.signals.gaussian_process
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+timesynth.signals.ode module
+----------------------------
+
+.. automodule:: timesynth.signals.ode
     :members:
     :undoc-members:
     :show-inheritance:

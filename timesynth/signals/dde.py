@@ -6,20 +6,66 @@ with warnings.catch_warnings():
     from jitcdde import provide_advanced_symbols, jitcdde
 
 
-__all__ = ['DDE', 'MackeyGlass']
+__all__ = ['MackeyGlass']
 
 
-class DDE(BaseSignal):
-    """Sample generator for delay differential equations
-
+class MackeyGlass(BaseSignal):
+    """Signal generator for the Mackey-Glass delay differential equation (DDE).
+    The equation is defined as follows:
+    
+    .. math::
+    
+        \\frac{dx}{dt} = \\beta \\frac{ x_{\\tau} }{1+{x_{\\tau}}^n}-\\gamma x, 
+        \\quad \\gamma,\\beta,n > 0, 
+        x_{\\tau} = x(t - \\tau)
+        
+    Chaotic behavior may occur for tau >= 17.
+        
     Parameters
     ----------
-    
-
+    tau : float (default 17)
+        The delay parameter
+    n : float (default 10)
+        The parameter n
+    beta : float (default 0.2)
+        The parameter beta
+    gamma : float (default 0.1)
+        The parameter gamma
+    initial_condition : array-like or None (default None)
+        A 2-D array consisting of entries in the form (time, value, derivative)
+        to be used as an inital condition on the DDE. If set to None a default 
+        will be used.
+    burn_in : float (default 100)
+        Amount of time after which samples will be taken and returned
+        
     """
     
-    def __init__(self):
-        pass
+    def __init__(self, tau=17., n=10., beta=0.2, gamma=0.1, initial_condition=None, burn_in=100):
+        self.vectorizable = True
+        
+        # Set system of equations
+        t, y, _, _, _ = provide_advanced_symbols()
+        f = [beta * y(0, t-tau) / (1.0 + y(0, t-tau) ** n) - gamma * y(0)]
+        self.dde = jitcdde(f)
+        
+        # Set initial condition
+        if initial_condition is None:
+            y_initial = 0.1
+            dy = 0.1
+            self.dde.add_past_point(-1.0, np.array([y_initial-dy]), np.array([dy]))
+            self.dde.add_past_point( 0.0, np.array([y_initial]), np.array([dy]))
+        else:
+            for condition in initial_condition:
+                time, value, derivative = condition
+                self.dde.add_past_point(time, np.array([value]), np.array([derivative]))
+        
+        # Prepare DDE
+        self.dde.generate_f_lambda()
+        self.dde.set_integration_parameters()
+        
+        # Run burn_in
+        self.burn_in = burn_in
+        self.dde.integrate_blindly(self.burn_in)
     
     def sample_next(self, time, samples, errors):
         """Samples next point based on history of samples and errors
@@ -39,7 +85,7 @@ class DDE(BaseSignal):
             sampled signal for time t
 
         """
-        raise NotImplementedError
+        return self.dde.integrate(self.burn_in + time)
 
     def sample_vectorized(self, time_vector):
         """Samples for all time points in input
@@ -51,53 +97,13 @@ class DDE(BaseSignal):
         
         Returns
         -------
-        float
-            sampled signal for time t
+        numpy array
+            samples for times provided in time_vector
 
         """
-        raise NotImplementedError
-
-
-
-class MackeyGlass(DDE):
-    def __init__(self):
-        super().__init__
-        pass
-    
-    def sample_next(self, time, samples, errors):
-        """Samples next point based on history of samples and errors
-
-        Parameters
-        ----------
-        time : int
-            time
-        samples : array-like
-            all samples taken so far
-        errors : array-like
-            all errors sampled so far
-
-        Returns
-        -------
-        float
-            sampled signal for time t
-
-        """
-        raise NotImplementedError
-
-    def sample_vectorized(self, time_vector):
-        """Samples for all time points in input
-
-        Parameters
-        ----------
-        time_vector : array like
-            all time stamps to be sampled
-        
-        Returns
-        -------
-        float
-            sampled signal for time t
-
-        """
-        raise NotImplementedError
+        samples = []
+        for t in time_vector:
+            samples.append(self.dde.integrate(self.burn_in + t))
+        return np.array(samples).reshape(-1,)
 
         
