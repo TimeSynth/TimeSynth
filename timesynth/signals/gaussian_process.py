@@ -7,6 +7,8 @@ __all__ = ['GaussianProcess']
 
 class GaussianProcess(BaseSignal):
     """Gaussian Process time series sampler
+    
+    Samples time series from Gaussian Process with selected covariance function (kernel).
 
     Parameters
     ----------

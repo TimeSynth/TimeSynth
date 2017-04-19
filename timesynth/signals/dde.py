@@ -11,8 +11,8 @@ __all__ = ['MackeyGlass']
 
 class MackeyGlass(BaseSignal):
     """Signal generator for the Mackey-Glass delay differential equation (DDE).
-    The equation is defined as follows:
     
+    The Mackey-Glass DDE is defined as follows:
     .. math::
     
         \\frac{dx}{dt} = \\beta \\frac{ x_{\\tau} }{1+{x_{\\tau}}^n}-\\gamma x, 

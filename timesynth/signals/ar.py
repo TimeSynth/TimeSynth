@@ -6,6 +6,8 @@ __all__ = ['AutoRegressive']
 
 class AutoRegressive(BaseSignal):
     """Sample generator for autoregressive (AR) signals.
+    
+    Generates time series with an autogressive lag defined by the number of parameters in ar_param.
     NOTE: Only use this for regularly sampled signals
     
     Parameters
@@ -13,7 +15,7 @@ class AutoRegressive(BaseSignal):
     ar_param : list (default [None])
         Parameter of the AR(p) process
         [phi_1, phi_2, phi_3, .... phi_p]
-    sigma : number (default 1.0)
+    sigma : float (default 1.0)
         Standard deviation of the signal
     start_value : list (default [None])
         Starting value of the AR(p) process
@@ -44,10 +46,10 @@ class AutoRegressive(BaseSignal):
 
         Returns
         -------
-        float
+        ar_value : float
             sampled signal for time t
         """
-        ar_value = [self.previous_value[i]*self.ar_param[i] for i in range(len(self.ar_param))]
+        ar_value = [self.previous_value[i] * self.ar_param[i] for i in range(len(self.ar_param))]
         noise = np.random.normal(loc=0.0, scale=self.sigma, size=1)
         ar_value = np.sum(ar_value) + noise
         self.previous_value = self.previous_value[1:]+[ar_value]

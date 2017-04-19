@@ -6,6 +6,7 @@ __all__ = ['PseudoPeriodic']
 
 class PseudoPeriodic(BaseSignal):
     """Signal generator for pseudoeriodic waves. 
+    
     The wave's amplitude and frequency have some stochasticity that 
     can be set manually.
 

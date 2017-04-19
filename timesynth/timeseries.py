@@ -10,9 +10,9 @@ class TimeSeries:
 
     Parameters
     ----------
-    signal_generator : `Signal` object
+    signal_generator : Signal object
         signal object for time series
-    noise_generator : `Noise` object
+    noise_generator : Noise object
         noise object for time series
 
     """
@@ -22,7 +22,19 @@ class TimeSeries:
 
 
     def sample(self, time_vector):
-
+        """Samples from the specified TimeSeries.
+        
+        Parameters
+        ----------
+        time_vector : numpy array
+            Times at which to generate a sample
+            
+        Returns
+        -------
+        samples, signals, errors, : tuple (array, array, array)
+            Returns samples, and the signals and errors they were constructed from
+        """
+        
         # Vectorize if possible
         if self.signal_generator.vectorizable and not self.noise_generator is None and self.noise_generator.vectorizable:
             signals = self.signal_generator.sample_vectorized(time_vector)
