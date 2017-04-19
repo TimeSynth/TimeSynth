@@ -93,14 +93,14 @@ class NARMA(BaseSignal):
         start = self.initial_condition.shape[0]
         
         # Get relevant arrays
-        inits = narma.initial_condition
+        inits = self.initial_condition
         rands = np.random.uniform(0, .5, size=start + times.shape[0])
         values = np.concatenate((inits, np.zeros(times.shape[0])))
         
         # Sample step-wise
         end = values.shape[0]
         for t in range(start, end):
-            values[t] = narma._next_value(values, rands, t)
+            values[t] = self._next_value(values, rands, t)
         
         # Return trimmed values (exclude initial condition)
         samples = values[start:]
