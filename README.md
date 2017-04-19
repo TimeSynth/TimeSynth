@@ -22,7 +22,8 @@ listed below.
     * Periodic
 * Pseudoperiodic signals
 * Autoregressive(p) process
-* Continuous autoregressive(CAR) process
+* Continuous autoregressive process (CAR)
+* Nonlinear Autoregressive Moving Average model (NARMA)
 
 #### Noise Types
 * White noise
@@ -45,16 +46,16 @@ $ python
 The code snippet demonstrates creating a irregular sinusoidal signal with white noise.
 ```python
 >>> import timesynth as ts
->>> #Initializing TimeSampler
+>>> # Initializing TimeSampler
 >>> time_sampler = ts.TimeSampler(stop_time=20)
->>> #Sampling irregular time samples
+>>> # Sampling irregular time samples
 >>> irregular_time_samples = time_sampler.sample_irregular_time(num_points=500, keep_percentage=50)
->>> #Initializing Sinusoidal signal
+>>> # Initializing Sinusoidal signal
 >>> sinusoid = ts.signals.Sinusoidal(frequency=0.25)
->>> #Initializing Gaussian noise
+>>> # Initializing Gaussian noise
 >>> white_noise = ts.noise.GaussianNoise(std=0.3)
->>> #Initializing TimeSeries class with the signal and noise objects
+>>> # Initializing TimeSeries class with the signal and noise objects
 >>> timeseries = ts.TimeSeries(sinusoid, noise_generator=white_noise)
->>> #Sampling using the irregular time samples
+>>> # Sampling using the irregular time samples
 >>> samples, signals, errors = timeseries.sample(irregular_time_samples)
 ```
