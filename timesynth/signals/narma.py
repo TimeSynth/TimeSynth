@@ -22,7 +22,13 @@ class NARMA(BaseSignal):
         The coefficients denoted by iterable `a` in the formula above. As in [1]_.
     initial_condition : iterable or None (default None)
         An array of starting values of y(k-n) until y(k). The default is an aray of zeros.
-    
+    seed : int
+        Use this seed to recreate any of the internal errors.
+        
+    Attributes
+    ----------
+    errors : numpy array or None
+        Random number sequence that was used to generate last NARMA sequence.
     
     References
     ----------
@@ -30,14 +36,24 @@ class NARMA(BaseSignal):
     
     """
     
-    def __init__(self, order=10, coefficients=[0.3, 0.05, 1.5, 0.1], initial_condition=None):
+    def __init__(self, order=10, coefficients=[0.3, 0.05, 1.5, 0.1], initial_condition=None,
+                 error_initial_condition=None, seed=42):
         self.vectorizable = True
         self.order = order
         self.coefficients = np.array(coefficients)
-        if not initial_condition is None:
-            self.initial_condition = np.array(initial_condition)
-        else:
+        self.random = numpy.random.RandomState(seed)
+        
+        # Store initial conditions
+        if initial_condition is None:
             self.initial_condition = np.zeros(order)
+        else:
+            self.initial_condition = np.array(initial_condition)
+        
+        # You may provide an error initial condition
+        if error_initial_condition is None:
+            self.error_initial_condition = self.random.uniform(0, 0.5, size=order)
+        else:
+            self.error_initial_condition = error_initial_condition
         
     
     def _next_value(self, values, rands, index):
@@ -55,28 +71,14 @@ class NARMA(BaseSignal):
         return a[0] * y[i-1] + a[1] * y[i-1] * np.sum(y[i-n:n]) + a[2] * u[i-n] * u[i] + a[3]
         
     def sample_next(self, time, samples, errors):
-        """Samples next point based on history of samples and errors
-
-        Parameters
-        ----------
-        time : int
-            time
-        samples : array-like
-            all samples taken so far
-        errors : array-like
-            all errors sampled so far
-
-        Returns
-        -------
-        float
-            sampled signal for time t
-
-        """
-        raise NotImplementedError('NARMA can only be sampled vectorized. \
-                                   Remove or replace error function')
+        """This method is not available for NARMA, due to internal error sampling."""
+        raise NotImplementedError("NARMA can only be sampled vectorized.")
+        
 
     def sample_vectorized(self, times):
         """Samples for all time points in input
+        
+        Internalizes Uniform(0, 0.5) random distortion for u.
 
         Parameters
         ----------
@@ -94,13 +96,17 @@ class NARMA(BaseSignal):
         
         # Get relevant arrays
         inits = self.initial_condition
-        rands = np.random.uniform(0, .5, size=start + times.shape[0])
+        rand_inits = self.error_initial_condition
+        rands = np.concatenate((rand_inits, self.random.uniform(0, .5, size=times.shape[0])))
         values = np.concatenate((inits, np.zeros(times.shape[0])))
         
         # Sample step-wise
         end = values.shape[0]
         for t in range(start, end):
             values[t] = self._next_value(values, rands, t)
+        
+        # Store valus for later retrieval
+        self.errors = rands[start:]
         
         # Return trimmed values (exclude initial condition)
         samples = values[start:]
