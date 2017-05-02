@@ -41,7 +41,7 @@ class NARMA(BaseSignal):
         self.vectorizable = True
         self.order = order
         self.coefficients = np.array(coefficients)
-        self.random = numpy.random.RandomState(seed)
+        self.random = np.random.RandomState(seed)
         
         # Store initial conditions
         if initial_condition is None:
