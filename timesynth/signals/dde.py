@@ -45,15 +45,15 @@ class MackeyGlass(BaseSignal):
         
         # Set system of equations
         t, y, _, _, _ = provide_advanced_symbols()
-        f = [beta * y(0, t-tau) / (1.0 + y(0, t-tau) ** n) - gamma * y(0)]
+        f = [- gamma * y(0) + beta * y(0, t-tau) / (1.0 + y(0, t-tau) ** n)]
         self.dde = jitcdde(f)
         
         # Set initial condition
         if initial_condition is None:
-            y_initial = 0.1
-            dy = 0.1
-            self.dde.add_past_point(-1.0, np.array([y_initial-dy]), np.array([dy]))
-            self.dde.add_past_point( 0.0, np.array([y_initial]), np.array([dy]))
+            y_initial = 1.0
+            dy = -gamma * y_initial + beta * y_initial / (1.0 + y_initial ** n)
+            # self.dde.add_past_point(-1.0, np.array([y_initial-dy]), np.array([dy]))
+            self.dde.add_past_point(0.0, np.array([y_initial]), np.array([dy]))
         else:
             for condition in initial_condition:
                 time, value, derivative = condition
