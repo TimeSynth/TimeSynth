@@ -40,7 +40,7 @@ class MackeyGlass(BaseSignal):
         
     """
     
-    def __init__(self, tau=17., n=10., beta=0.2, gamma=0.1, initial_condition=None, burn_in=100):
+    def __init__(self, tau=17., n=10., beta=0.2, gamma=0.1, initial_condition=None, burn_in=500):
         self.vectorizable = True
         
         # Set system of equations
