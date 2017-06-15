@@ -53,7 +53,8 @@ class MackeyGlass(BaseSignal):
             y_initial = 1.0
             dy = lambda y: -gamma * y + beta * y / (1.0 + y ** n)
             dy_initial = dy(y_initial)
-            self.dde.add_past_point(-1.0, np.array([y_initial - dy_initial]), np.array([0.0]))
+            dy_prev = dy(y_initial - dy_initial)
+            self.dde.add_past_point(-1.0, np.array([y_initial - dy_initial]), np.array([dy_prev]))
             self.dde.add_past_point(0.0, np.array([y_initial]), np.array([dy_initial]))
         else:
             for condition in initial_condition:
