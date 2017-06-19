@@ -1,6 +1,7 @@
 import numpy as np
 from .base_signal import BaseSignal
 
+
 __all__ = ['NARMA']
 
 
@@ -55,7 +56,6 @@ class NARMA(BaseSignal):
         else:
             self.error_initial_condition = error_initial_condition
         
-    
     def _next_value(self, values, rands, index):
         """Internal short-hand method to calculate next value."""
         # Short-hand parameters
@@ -74,7 +74,6 @@ class NARMA(BaseSignal):
         """This method is not available for NARMA, due to internal error sampling."""
         raise NotImplementedError("NARMA can only be sampled vectorized.")
         
-
     def sample_vectorized(self, times):
         """Samples for all time points in input
         
