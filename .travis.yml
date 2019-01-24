@@ -24,7 +24,7 @@ install:
   - conda info -a
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pandas pytest h5py
   - source activate test-environment
-  - pip install pytest-cov pytest-xdist coverage==3.7.1
+  - pip install pytest-cov pytest-xdist coverage==4.4
   - pip install --user codecov
   - python setup.py install
 script:
