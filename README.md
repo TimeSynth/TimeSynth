@@ -1,14 +1,15 @@
 [![Build Status](https://travis-ci.org/TimeSynth/TimeSynth.svg?branch=master)](https://travis-ci.org/TimeSynth/TimeSynth) [![codecov](https://codecov.io/gh/TimeSynth/TimeSynth/branch/master/graph/badge.svg)](https://codecov.io/gh/TimeSynth/TimeSynth)
 
 # TimeSynth
-Multipurpose Library for Synthetic Time Series
-
+_Multipurpose Library for Synthetic Time Series_
 
 **TimeSynth** is an open source library for generating synthetic time series for
 model testing. The library can generate regular and irregular time series. The architecture
 allows the user to match different signals with different architectures allowing
 a vast array of signals to be generated. The available signals and noise types are
 listed below.
+
+N.B. We only support Python 3.5+ at this time.
 
 #### Signal Types
 * Harmonic functions(sin, cos or custom functions)
@@ -36,8 +37,6 @@ git clone https://github.com/TimeSynth/TimeSynth.git
 cd TimeSynth
 python setup.py install
 ```
-
-
 
 ### Using TimeSynth
 ```shell
