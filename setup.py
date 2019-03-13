@@ -18,7 +18,7 @@ tests_requirements = [
 
 # Install
 setup(name='timesynth',
-      version='0.2.1',
+      version='0.2.2',
       description='Library for creating synthetic time series',
       url='https://github.com/TimeSynth/TimeSynth',
       author='Abhishek Malali, Reinier Maat, Pavlos Protopapas',
