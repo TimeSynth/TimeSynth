@@ -1,4 +1,4 @@
 numpy
 scipy
 sympy
-jitcdde
+git+https://github.com/TimeSynth/jitcdde.git#egg=jitcdde
