@@ -6,8 +6,8 @@ __all__ = ['NARMA']
 
 
 class NARMA(BaseSignal):
-    """Non-linear Autoregressive Moving Average generator.
-    
+    r"""Non-linear Autoregressive Moving Average generator.
+    		
     An n-th order signal generator of the NARMA class, as defined in [1]_:
     .. \math:: y(k+1) = a[0] * y(k) + a[1] * y(k) * \sum_{i=0}^{n-1} y(k-i) + a[2] * u(k-(n-1)) * u(k) + a[3]
     
