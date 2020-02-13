@@ -50,7 +50,7 @@ class PseudoPeriodic(BaseSignal):
         """
         freq_val = np.random.normal(loc=self.frequency, scale=self.freqSD, size=1)
         amplitude_val = np.random.normal(loc=self.amplitude, scale=self.ampSD, size=1)
-        return float(amplitude_val * np.sin(freq_val * time))
+        return float(amplitude_val * self.ftype(freq_val * time))
 
     def sample_vectorized(self, time_vector):
         """Sample entire series based off of time vector
