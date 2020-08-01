@@ -3,6 +3,9 @@
 # TimeSynth
 _Multipurpose Library for Synthetic Time Series_
 
+**Please cite as:**   
+J. R. Maat, A. Malali, and P. Protopapas, “TimeSynth: A Multipurpose Library for Synthetic Time Series in Python,” 2017. [Online]. Available: http://github.com/TimeSynth/TimeSynth
+
 **TimeSynth** is an open source library for generating synthetic time series for
 model testing. The library can generate regular and irregular time series. The architecture
 allows the user to match different signals with different architectures allowing
