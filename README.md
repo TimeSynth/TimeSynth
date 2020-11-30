@@ -12,7 +12,7 @@ allows the user to match different signals with different architectures allowing
 a vast array of signals to be generated. The available signals and noise types are
 listed below.
 
-N.B. We only support Python 3.5+ at this time.
+N.B. We only support Python 3.6+ at this time.
 
 #### Signal Types
 * Harmonic functions(sin, cos or custom functions)
