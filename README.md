@@ -61,3 +61,6 @@ The code snippet demonstrates creating a irregular sinusoidal signal with white 
 >>> # Sampling using the irregular time samples
 >>> samples, signals, errors = timeseries.sample(irregular_time_samples)
 ```
+
+### License
+The contents of this repository is licensed under an [MIT license](https://github.com/TimeSynth/TimeSynth/blob/master/LICENSE).
